@@ -1,5 +1,5 @@
 {
-    "name": "florianmoser/bedrock-deployer",
+    "name": "esquire900/bedrock-deployer",
     "description": "Deployer recipes for Roots Bedrock",
     "require": {
         "deployer/deployer": ">=6.0",
