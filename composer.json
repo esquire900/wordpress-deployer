@@ -2,7 +2,7 @@
     "name": "esquire900/wordpress-deployer",
     "description": "Opinionated Deployer recipe for wordpress deployments",
     "require": {
-        "deployer/deployer": ">=6.0",
+        "deployer/deployer": "*",
         "vlucas/phpdotenv": "^5.0"
     },
     "license": "MIT",
