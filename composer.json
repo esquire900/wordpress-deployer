@@ -1,14 +1,14 @@
 {
-    "name": "esquire900/wordpress-deployer",
-    "description": "Opinionated Deployer recipe for wordpress deployments",
-    "require": {
-        "deployer/deployer": "*",
-        "vlucas/phpdotenv": "^5.0"
-    },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Simon Nouwens"
-        }
-    ]
+  "name": "esquire900/wordpress-deployer",
+  "description": "Opinionated Deployer recipe for wordpress deployments",
+  "require": {
+    "deployer/deployer": "7.0.2",
+    "vlucas/phpdotenv": "^5.5"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Simon Nouwens"
+    }
+  ]
 }

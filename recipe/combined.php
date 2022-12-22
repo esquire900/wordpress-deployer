@@ -5,7 +5,6 @@ use function Deployer\set;
 use function Deployer\task;
 
 require(__DIR__ . '/../lib/functions.php');
-require(__DIR__ . '/../../../deployer/deployer/recipe/common.php');
 require(__DIR__ . '/bedrock_db.php');
 require(__DIR__ . '/bedrock_env.php');
 require(__DIR__ . '/common.php');
@@ -20,7 +19,7 @@ task('sync', [
 ]);
 
 set('shared_dirs', [
-    'web/wp-content/uploads'
+//    'web/wp-content/uploads'
 ]);
 
 set('sync_dirs', [
