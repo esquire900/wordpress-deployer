@@ -3,7 +3,6 @@
 namespace Deployer;
 
 use Dotenv;
-require_once(__DIR__ . '/../vendor/autoload.php');
 
 /**
  * Returns the local WP URL or false, if not found.

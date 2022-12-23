@@ -62,11 +62,4 @@ task( 'backup:remote_files', function () {
             run( "cd {$backupDir} && zip -r {$backupFilename} {$dir} -x \"_backup_*.zip\"" );
         }
     };
-
 } );
-
-desc( 'Upload sync directories from local to server after making backup of remote files' );
-task( 'push:files', [
-    'backup:remote_files',
-    'push:files',
-] );

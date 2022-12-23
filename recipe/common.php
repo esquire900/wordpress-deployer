@@ -9,7 +9,6 @@ namespace Deployer;
 require(__DIR__ . '/../lib/functions.php');
 require(__DIR__ . '/bedrock_db.php');
 require(__DIR__ . '/bedrock_env.php');
-require(__DIR__ . '/common.php');
 require(__DIR__ . '/bedrock_misc.php');
 require(__DIR__ . '/filetransfer.php');
 
@@ -47,12 +46,10 @@ task('bedrock:vendors', function () {
     run('cd {{release_path}} && /usr/bin/composer install {{composer_options}}');
 });
 
-set('github_token', function () {
-    return getenv('GITHUB_TOKEN');
-});
+
 task('deploy:composer_token', function () {
     run('{{bin/composer}} config -g github-oauth.github.com {{github_token}}');
 });
 
-
 after('deploy:failed', 'deploy:unlock');
+
