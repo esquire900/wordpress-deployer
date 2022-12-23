@@ -21,48 +21,29 @@ require(__DIR__ . '/../lib/functions.php');
 
 desc('Pulls DB from server and installs it locally, after having made a backup of local DB');
 task('pull:db', function () use ($getLocalEnv, $getRemoteEnv, $urlToDomain) {
-
     // Export db
-    $exportFilename = '_db_export_' . date('Y-m-d_H-i-s') . '.sql';
+    $exportFilename = '_db_remote_' . get('project_name') . '_' . get('host') . '_' . date('Y-m-d_H-i-s') . '.sql';
     $exportAbsFile = get('deploy_path') . '/' . $exportFilename;
-    writeln("<comment>Exporting server DB to {$exportAbsFile}</comment>");
-    run("cd {{current_path}} && wp db export {$exportAbsFile}");
-
-    // Download db export
+    run("cd {{current_path}} && /opt/plesk/php/8.0/bin/php /usr/local/bin/wp db export {$exportAbsFile}");
     $downloadedExport = get('local_root') . '/' . $exportFilename;
-    writeln("<comment>Downloading DB export to {$downloadedExport}</comment>");
-    download($exportAbsFile, $downloadedExport);
 
-    // Cleanup exports on server
-    writeln("<comment>Cleaning up {$exportAbsFile} on server</comment>");
+    download($exportAbsFile, $downloadedExport);
     run("rm {$exportAbsFile}");
 
-    // Create backup of local DB
-    $backupFilename = '_db_backup_' . date('Y-m-d_H-i-s') . '.sql';
-    $backupAbsFile = get('local_root') . '/' . $backupFilename;
-    writeln("<comment>Making backup of DB on local machine to {$backupAbsFile}</comment>");
-    runLocally("cd {{local_root}} && wp db export {$backupFilename}");
+    $backupFilename = '_db_local_' . get('project_name') . '_' . date('Y-m-d_H-i-s') . '.sql';
+    $backupAbsFile = $backupFilename;
+    runLocally("cd {{local_root}} && ddev wp db export {$backupAbsFile}");
+    runLocally("cd {{local_root}} && ddev wp db reset");
+    runLocally("cd {{local_root}} && ddev wp db import {$exportFilename}");
 
-    // Empty local DB
-    writeln("<comment>Reset local DB</comment>");
-    runLocally("cd {{local_root}} && wp db reset");
+    runLocally("cd {{local_root}} && rm {$exportFilename}");
+    runLocally("cd {{local_root}} && rm {$backupAbsFile}");
 
-    // Import export file
-    writeln("<comment>Importing {$downloadedExport}</comment>");
-    runLocally("cd {{local_root}} && wp db import {$exportFilename}");
+    // Also get domain without protocol and trailing slash
+    $localDomain = $urlToDomain($getLocalEnv());
+    $remoteDomain = $urlToDomain($getRemoteEnv());
 
-    // Load local .env file and get local WP URL
-    if (!$localUrl = $getLocalEnv()) {
-        return;
-    }
-
-    // Load remote .env file and get remote WP URL
-    if (!$remoteUrl = $getRemoteEnv()) {
-        return;
-    }
-    // Cleanup exports on local machine
-    writeln("<comment>Cleaning up {$downloadedExport} on local machine</comment>");
-    runLocally("rm {$downloadedExport}");
+    runLocally("cd {{local_root}} && ddev wp search-replace \"{$remoteDomain}\"  \"{$localDomain}\" --skip-themes --url='{$localDomain}' --network");
 });
 
 task('push:db', function () use ($getLocalEnv, $getRemoteEnv, $urlToDomain) {

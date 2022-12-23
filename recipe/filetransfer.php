@@ -22,7 +22,7 @@ namespace Deployer;
  * files are not deleted on server.
  */
 desc( 'Upload sync directories from local to server' );
-task( 'push:files-no-bak', function () {
+task( 'push:files', function () {
 
     foreach ( get( 'sync_dirs' ) as $localDir => $serverDir ) {
         upload( $localDir, $serverDir );
@@ -37,7 +37,7 @@ task( 'push:files-no-bak', function () {
  * on the server are not deleted on local machine.
  */
 desc( 'Download sync directories from server to local' );
-task( 'pull:files-no-bak', function () {
+task( 'pull:files', function () {
 
     foreach ( get( 'sync_dirs' ) as $localDir => $serverDir ) {
         download( $serverDir, $localDir );
@@ -65,34 +65,8 @@ task( 'backup:remote_files', function () {
 
 } );
 
-desc( 'Create backup from sync directories on local machine' );
-task( 'backup:local_files', function () {
-
-    foreach ( get( 'sync_dirs' ) as $localDir => $serverDir ) {
-        $backupFilename = '_backup_' . date( 'Y-m-d_H-i-s' ) . '.zip';
-
-        // Note: sync_dirs can have a trailing slash (which means, sync only the content of the specified directory)
-        if ( substr( $localDir, - 1 ) == '/' ) {
-            // Add everything from synced directory to zip, but exclude previous backups
-            runLocally( "cd {$localDir} && zip -r {$backupFilename} . -x \"_backup_*.zip\"" );
-        } else {
-            $backupDir = dirname( $localDir );
-            $dir       = basename( $localDir );
-            // Add everything from synced directory to zip, but exclude previous backups
-            runLocally( "cd {$backupDir} && zip -r {$backupFilename} {$dir} -x \"_backup_*.zip\"" );
-        }
-    };
-
-} );
-
 desc( 'Upload sync directories from local to server after making backup of remote files' );
 task( 'push:files', [
     'backup:remote_files',
-    'push:files-no-bak',
-] );
-
-desc( 'Download sync directories from server to local machine after making backup of local files' );
-task( 'pull:files', [
-    'backup:local_files',
-    'pull:files-no-bak',
+    'push:files',
 ] );

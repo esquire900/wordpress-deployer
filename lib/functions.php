@@ -3,6 +3,7 @@
 namespace Deployer;
 
 use Dotenv;
+require_once(__DIR__ . '/../vendor/autoload.php');
 
 /**
  * Returns the local WP URL or false, if not found.
@@ -11,7 +12,7 @@ use Dotenv;
  */
 if (!isset($getLocalEnv)) {
     $getLocalEnv = function () {
-        $localEnv = Dotenv\Dotenv::createMutable(get('local_root'), '.env');
+        $localEnv = \Dotenv\Dotenv::createMutable(get('local_root'), '.env');
         $localEnv->load();
         $localUrl = $_ENV['WP_HOME'];
 
