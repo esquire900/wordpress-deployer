@@ -1,4 +1,4 @@
-# wordpress-deployer
+[# wordpress-deployer
 [Deployer](https://deployer.org/) recipe for an opinionated wordpress deploy.
 
 Makes use of DDEV, roots bedrock and deployer 7.
@@ -58,3 +58,4 @@ task('deploy', [
 ```
 Based on [florianmoser/bedrock-deployer](https://github.com/florianmoser/bedrock-deployer)
 
+]()
