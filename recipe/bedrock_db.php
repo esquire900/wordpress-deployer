@@ -17,7 +17,7 @@
 
 namespace Deployer;
 
-require(__DIR__ . '/../lib/functions.php');
+require_once(__DIR__ . '/../lib/functions.php');
 
 desc('Pulls DB from server and installs it locally, after having made a backup of local DB');
 task('pull:db', function () use ($getLocalEnv, $getRemoteEnv, $urlToDomain) {
