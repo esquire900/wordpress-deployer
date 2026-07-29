@@ -16,6 +16,10 @@ require_once(__DIR__ . '/filetransfer.php');
 // any plugin or theme and is therefore on by default. Cache recipes that *are*
 // stack-specific (wp_rocket.php, divi.php) are opt-in from your deploy.php.
 require_once(__DIR__ . '/opcache.php');
+// Same rationale: a release that bumps core or a plugin leaves the database on
+// the old schema until someone clicks the admin notice, which is not specific
+// to any stack either.
+require_once(__DIR__ . '/db_update.php');
 
 task('sync', [
    'pull:files',
