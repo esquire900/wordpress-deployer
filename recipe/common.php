@@ -17,20 +17,6 @@ require(__DIR__ . '/filetransfer.php');
 // stack-specific (wp_rocket.php, divi.php) are opt-in from your deploy.php.
 require(__DIR__ . '/opcache.php');
 
-use function Deployer\add;
-use function Deployer\add;
-use function Deployer\after;
-use function Deployer\after;
-use function Deployer\get;
-use function Deployer\get;
-use function Deployer\run;
-use function Deployer\run;
-use function Deployer\set;
-use function Deployer\set;
-use function Deployer\task;
-use function Deployer\task;
-
-
 task('sync', [
    'pull:files',
    'pull:db',
