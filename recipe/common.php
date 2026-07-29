@@ -11,12 +11,23 @@ require(__DIR__ . '/bedrock_db.php');
 require(__DIR__ . '/bedrock_env.php');
 require(__DIR__ . '/bedrock_misc.php');
 require(__DIR__ . '/filetransfer.php');
+// Every release swap moves the docroot to a new absolute path, so the FPM
+// pool's OPcache always needs flushing afterwards -- this is not specific to
+// any plugin or theme and is therefore on by default. Cache recipes that *are*
+// stack-specific (wp_rocket.php, divi.php) are opt-in from your deploy.php.
+require(__DIR__ . '/opcache.php');
 
 use function Deployer\add;
+use function Deployer\add;
+use function Deployer\after;
 use function Deployer\after;
 use function Deployer\get;
+use function Deployer\get;
+use function Deployer\run;
 use function Deployer\run;
 use function Deployer\set;
+use function Deployer\set;
+use function Deployer\task;
 use function Deployer\task;
 
 
@@ -31,6 +42,10 @@ set('project_name', function () {
     return str_replace('.git', '', $name);
 });
 
+
+// Bedrock's wp-content equivalent. Set to 'wp-content' for a classic layout;
+// the cache recipes build their shared dirs from it.
+set('content_dir', 'web/app');
 
 add('shared_files', ['.env']);
 add('shared_dirs', ['web/app/uploads']);
